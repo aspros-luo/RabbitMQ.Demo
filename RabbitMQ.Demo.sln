@@ -1,19 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewTask", "NewTask\NewTask.csproj", "{567B899B-1645-4D0E-96E6-0C39BFFAC2FA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Receive", "Receive\Receive.csproj", "{F9634A26-A77D-4D58-A97F-66330CB8984C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Send", "Send\Send.csproj", "{AD7A410A-E31B-41B6-B0A9-C507055C5753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ.Test", "RabbitMQ.Test\RabbitMQ.Test.csproj", "{C03F09B4-68C2-4782-85E8-FAB742CFDF92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "Worker\Worker.csproj", "{66E1FC99-4A85-4D88-AF98-DF6EDA900F56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ.Test.Receiver", "RabbitMQ.Test.Receiver\RabbitMQ.Test.Receiver.csproj", "{86265419-C525-4E97-8BA5-33850EC07365}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Test", "RabbitMQ.Test\RabbitMQ.Test.csproj", "{C03F09B4-68C2-4782-85E8-FAB742CFDF92}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Test.Receiver", "RabbitMQ.Test.Receiver\RabbitMQ.Test.Receiver.csproj", "{86265419-C525-4E97-8BA5-33850EC07365}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Demo.Rpc.Receiver", "RabbitMQ.Demo.Rpc.Receiver\RabbitMQ.Demo.Rpc.Receiver.csproj", "{C334EE2D-7D4B-43A6-B181-39A8ED834D9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,22 +17,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{567B899B-1645-4D0E-96E6-0C39BFFAC2FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{567B899B-1645-4D0E-96E6-0C39BFFAC2FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{567B899B-1645-4D0E-96E6-0C39BFFAC2FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{567B899B-1645-4D0E-96E6-0C39BFFAC2FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9634A26-A77D-4D58-A97F-66330CB8984C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9634A26-A77D-4D58-A97F-66330CB8984C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9634A26-A77D-4D58-A97F-66330CB8984C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9634A26-A77D-4D58-A97F-66330CB8984C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD7A410A-E31B-41B6-B0A9-C507055C5753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD7A410A-E31B-41B6-B0A9-C507055C5753}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD7A410A-E31B-41B6-B0A9-C507055C5753}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD7A410A-E31B-41B6-B0A9-C507055C5753}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66E1FC99-4A85-4D88-AF98-DF6EDA900F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66E1FC99-4A85-4D88-AF98-DF6EDA900F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66E1FC99-4A85-4D88-AF98-DF6EDA900F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66E1FC99-4A85-4D88-AF98-DF6EDA900F56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C03F09B4-68C2-4782-85E8-FAB742CFDF92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C03F09B4-68C2-4782-85E8-FAB742CFDF92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C03F09B4-68C2-4782-85E8-FAB742CFDF92}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +29,10 @@ Global
 		{86265419-C525-4E97-8BA5-33850EC07365}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86265419-C525-4E97-8BA5-33850EC07365}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86265419-C525-4E97-8BA5-33850EC07365}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C334EE2D-7D4B-43A6-B181-39A8ED834D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C334EE2D-7D4B-43A6-B181-39A8ED834D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C334EE2D-7D4B-43A6-B181-39A8ED834D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C334EE2D-7D4B-43A6-B181-39A8ED834D9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
