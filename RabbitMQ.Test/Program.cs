@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -9,7 +10,9 @@ namespace RabbitMQ.Test
     {
         static void Main(string[] args)
         {
-            RunRpcQueue();
+            //            RunRpcQueue();
+            //            SendQueueWithRoutingKey();
+            //            SendQueueWithTopic();
         }
 
         private static void SendQueue()
@@ -97,6 +100,107 @@ namespace RabbitMQ.Test
                 channel.BasicPublish("", queueKey, basicPorperties, msgByte);
             };
             channel.BasicConsume(rpcResponseQueue, false, rpcEventingBasicConsumer);
+        }
+
+        private static void SendQueueWithRoutingKey()
+        {
+            var connectionFactory = new ConnectionFactory
+            {
+                HostName = "localhost"
+            };
+            var connection = connectionFactory.CreateConnection();
+            var channel = connection.CreateModel();
+            var exchangeName = "my routing key exchange";
+            var queueName = "my routing key queue";
+            var routingKey = "SPE";
+            var routingKey1 = "SB";
+            var routingKey2 = "ST";
+            var queueMsg = "the message is from the spe";
+            var queueMsg1 = "the message is from the sb";
+            var queueMsg2 = "the message is from the st";
+            channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, true, false, null);
+            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueBind(queueName, exchangeName, routingKey, null);
+            channel.QueueBind(queueName, exchangeName, routingKey1, null);
+            channel.QueueBind(queueName, exchangeName, routingKey2, null);
+            var basicPorperties = channel.CreateBasicProperties();
+            basicPorperties.Persistent = true;
+            basicPorperties.ContentType = "text/plain";
+
+            var address = new PublicationAddress(ExchangeType.Direct, exchangeName, routingKey);
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes(queueMsg));
+
+            address = new PublicationAddress(ExchangeType.Direct, exchangeName, routingKey1);
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes(queueMsg1));
+
+            address = new PublicationAddress(ExchangeType.Direct, exchangeName, routingKey2);
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes(queueMsg2));
+
+            channel.Close();
+            connection.Close();
+        }
+
+        private static void SendQueueWithTopic()
+        {
+            var connectionFactory = new ConnectionFactory() { HostName = "localhost" };
+            var connection = connectionFactory.CreateConnection();
+            var channel = connection.CreateModel();
+            var exchageName = "my topic exchange";
+            var queueName = "my topic queue";
+            channel.ExchangeDeclare(exchageName, ExchangeType.Topic, true, false, null);
+            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueBind(queueName, exchageName, "*.world");
+            channel.QueueBind(queueName, exchageName, "world.#");
+
+            var basicPorperties = channel.CreateBasicProperties();
+            basicPorperties.Persistent = true;
+            basicPorperties.ContentType = "text/plain";
+            var address = new PublicationAddress(ExchangeType.Topic, exchageName, "news of the world");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("news of the world"));
+
+            address = new PublicationAddress(ExchangeType.Topic, exchageName, "news.of.the.world");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("news.of.the.world"));
+
+            address = new PublicationAddress(ExchangeType.Topic, exchageName, "the world by dio");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("the world by dio"));
+
+            address = new PublicationAddress(ExchangeType.Topic, exchageName, "the.world.by.dio");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("the.world.by.dio"));
+
+            address = new PublicationAddress(ExchangeType.Topic, exchageName, "world new and more");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("world new and more"));
+
+            address = new PublicationAddress(ExchangeType.Topic, exchageName, "world.new.and.more");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("world.new.and.more"));
+
+            channel.Close();
+            connection.Close();
+        }
+
+        private static void SendHeaderQueue()
+        {
+            var connectionFactory = new ConnectionFactory() { HostName = "localhost" };
+            var connection = connectionFactory.CreateConnection();
+            var channel = connection.CreateModel();
+            var exchangeName = "my header exchange";
+            var queueName = "my header queue";
+
+            channel.ExchangeDeclare(exchangeName, ExchangeType.Headers, true, false, null);
+            channel.QueueDeclare(queueName, true, false, false, null);
+
+            var headerWithAll = new Dictionary<string, object> { { "x-math", "all" }, { "category", "animal" }, { "type", "mammal" } };
+            channel.QueueBind(queueName, exchangeName, "", headerWithAll);
+
+            headerWithAll = new Dictionary<string, object> { { "x-math", "any" }, { "category", "plant" }, { "type", "tree" } };
+            channel.QueueBind(queueName, exchangeName, "", headerWithAll);
+
+            var basicPorperties = channel.CreateBasicProperties();
+            var msgHeader = new Dictionary<string, object> { { "category", "animal" }, { "type", "insect" } };
+            basicPorperties.Headers = msgHeader;
+            var address = new PublicationAddress(ExchangeType.Headers, exchangeName, "");
+            channel.BasicPublish(address, basicPorperties, Encoding.UTF8.GetBytes("hello from the world of insect"));
+
+
         }
     }
 }
